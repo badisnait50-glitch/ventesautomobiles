@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vente d'Automobiles Premium</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .intro h2 {
+            font-size: 2rem;
+            color: #16213e;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .intro p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .vehicles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .vehicle-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .vehicle-image-container {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            background: #e9ecef;
+        }
+
+        .vehicle-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .vehicle-card:hover .vehicle-image {
+            transform: scale(1.05);
+        }
+
+        .vehicle-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(22, 33, 62, 0.9);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .vehicle-info {
+            padding: 1.5rem;
+        }
+
+        .vehicle-title {
+            font-size: 1.5rem;
+            color: #16213e;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .vehicle-specs {
+            display: flex;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .vehicle-description {
+            color: #666;
+            margin: 1rem 0;
+            line-height: 1.5;
+        }
+
+        .vehicle-price {
+            font-size: 1.8rem;
+            color: #e74c3c;
+            font-weight: 600;
+            margin: 1rem 0;
+        }
+
+        .btn-contact {
+            display: inline-block;
+            width: 100%;
+            padding: 0.9rem;
+            background: #16213e;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-contact:hover {
+            background: #0f4c75;
+        }
+
+        .gallery-thumbnails {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding: 0 1.5rem 1rem;
+        }
+
+        .thumbnail {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .thumbnail:hover,
+        .thumbnail.active {
+            opacity: 1;
+            border-color: #16213e;
+        }
+
+        .contact-section {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .contact-section h2 {
+            font-size: 2rem;
+            color: #16213e;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        .contact-section p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #16213e;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .footer {
+            background: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .vehicles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .vehicle-specs {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .contact-section {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            display: none;
+            text-align: center;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🚗 AUTOMOBILES PREMIUM</h1>
+        <p>Votre partenaire de confiance pour l'achat d'automobiles de qualité</p>
+    </header>
+
+    <div class="container">
+        <div class="intro">
+            <h2>Découvrez Notre Collection</h2>
+            <p>Des véhicules soigneusement sélectionnés, entretenus et garantis pour votre satisfaction</p>
+        </div>
+
+        <div class="vehicles-grid" id="vehiclesGrid">
+            <!-- Vehicle 1 -->
+            <div class="vehicle-card">
+                <div class="vehicle-image-container">
+                    <img src="https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=800&h=500&fit=crop" alt="BMW Série 3" class="vehicle-image" data-gallery="1">
+                    <div class="vehicle-badge">Disponible</div>
+                </div>
+                <div class="gallery-thumbnails">
+                    <img src="https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=100&h=100&fit=crop" class="thumbnail active" data-full="https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=800&h=500&fit=crop" data-gallery="1">
+                    <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=100&h=100&fit=crop" class="thumbnail" data-full="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800&h=500&fit=crop" data-gallery="1">
+                    <img src="https://images.unsplash.com/photo-1619405399517-d7fce0f13302?w=100&h=100&fit=crop" class="thumbnail" data-full="https://images.unsplash.com/photo-1619405399517-d7fce0f13302?w=800&h=500&fit=crop" data-gallery="1">
+                </div>
+                <div class="vehicle-info">
+                    <h3 class="vehicle-title">BMW Série 3</h3>
+                    <div class="vehicle-specs">
+                        <div class="spec-item">📅 2021</div>
+                        <div class="spec-item">⚙️ Automatique</div>
+                        <div class="spec-item">🛣️ 45 000 km</div>
+                    </div>
+                    <p class="vehicle-description">
+                        Berline sportive élégante, équipée d'un moteur performant et d'options haut de gamme. Intérieur cuir, navigation GPS, système audio premium.
+                    </p>
+                    <div class="vehicle-price">32 500 €</div>
+                    <button class="btn-contact" onclick="scrollToContact('BMW Série 3')">Demander des informations</button>
+                </div>
+            </div>
+
+            <!-- Vehicle 2 -->
+            <div class="vehicle-card">
+                <div class="vehicle-image-container">
+                    <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&h=500&fit=crop" alt="Audi Q5" class="vehicle-image" data-gallery="2">
+                    <div class="vehicle-badge">Disponible</div>
+                </div>
+                <div class="gallery-thumbnails">
+                    <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=100&h=100&fit=crop" class="thumbnail active" data-full="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&h=500&fit=crop" data-gallery="2">
+                    <img src="https://images.unsplash.com/photo-1614200187524-dc4b892acf16?w=100&h=100&fit=crop" class="thumbnail" data-full="https://images.unsplash.com/photo-1614200187524-dc4b892acf16?w=800&h=500&fit=crop" data-gallery="2">
+                    <img src="https://images.unsplash.com/photo-1610768764270-790fbec18178?w=100&h=100&fit=crop" class="thumbnail" data-full="https://images.unsplash.com/photo-1610768764270-790fbec18178?w=800&h=500&fit=crop" data-gallery="2">
+                </div>
+                <div class="vehicle-info">
+                    <h3 class="vehicle-title">Audi Q5</h3>
+                    <div class="vehicle-specs">
+                        <div class="spec-item">📅 2020</div>
+                        <div class="spec-item">⚙️ Automatique</div>
+                        <div class="spec-item">🛣️ 58 000 km</div>
+                    </div>
+                    <p class="vehicle-description">
+                        SUV premium offrant confort et polyvalence. Technologie Quattro, aide au stationnement, écran tactile multimédia. État impeccable.
+                    </p>
+                    <div class="vehicle-price">38 900 €</div>
+                    <button class="btn-contact" onclick="scrollToContact('Audi Q5')">Demander des informations</button>
+                </div>
+            </div>
+
+            <!-- Vehicle 3 -->
+            <div class="vehicle-card">
+                <div class="vehicle-image-container">
+                    <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&h=500&fit=crop" alt="Mercedes Classe C" class="vehicle-image" data-gallery="3">
+                    <div class="vehicle-badge">Réservé</div>
+                </div>
+                <div class="gallery-thumbnails">
+                    <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=100&h=100&fit=crop" class="thumbnail active" data-full="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&h=500&fit=crop" data-gallery="3">
+                    <img src="https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=100&h=100&fit=crop" class="thumbnail" data-full="https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=800&h=500&fit=crop" data-gallery="3">
+                    <img src="https://images.unsplash.com/photo-1617469767053-d3b523a0b982?w=100&h=100&fit=crop" class="thumbnail" data-full="https://images.unsplash.com/photo-1617469767053-d3b523a0b982?w=800&h=500&fit=crop" data-gallery="3">
+                </div>
+                <div class="vehicle-info">
+                    <h3 class="vehicle-title">Mercedes Classe C</h3>
+                    <div class="vehicle-specs">
+                        <div class="spec-item">📅 2022</div>
+                        <div class="spec-item">⚙️ Automatique</div>
+                        <div class="spec-item">🛣️ 25 000 km</div>
+                    </div>
+                    <p class="vehicle-description">
+                        Luxe et raffinement à l'état pur. Pack AMG, sièges massants, système de conduite semi-autonome. Garantie constructeur active.
+                    </p>
+                    <div class="vehicle-price">42 000 €</div>
+                    <button class="btn-contact" onclick="scrollToContact('Mercedes Classe C')">Demander des informations</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-section" id="contactSection">
+            <h2>Contactez-nous</h2>
+            <p>Intéressé par l'un de nos véhicules ? Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.</p>
+            
+            <div class="success-message" id="successMessage">
+                ✓ Merci ! Votre message a été envoyé avec succès. Nous vous contacterons bientôt.
+            </div>
+
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">Nom complet *</label>
+                    <input type="text" id="name" name="name" required placeholder="Votre nom">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Téléphone *</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="+213 XX XX XX XX XX">
+                </div>
+
+                <div class="form-group">
+                    <label for="vehicle">Véhicule d'intérêt</label>
+                    <select id="vehicle" name="vehicle">
+                        <option value="">-- Sélectionnez un véhicule --</option>
+                        <option value="BMW Série 3">BMW Série 3</option>
+                        <option value="Audi Q5">Audi Q5</option>
+                        <option value="Mercedes Classe C">Mercedes Classe C</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message *</label>
+                    <textarea id="message" name="message" required placeholder="Parlez-nous de vos besoins, questions ou demandes spécifiques..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-contact">Envoyer ma demande</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Automobiles Premium. Tous droits réservés.</p>
+        <p>📍 Blida, Algérie | 📞 Contact: +213 XX XX XX XX XX | ✉️ contact@automobiles-premium.dz</p>
+    </footer>
+
+    <script>
+        // Gallery functionality
+        document.querySelectorAll('.thumbnail').forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                const galleryId = this.dataset.gallery;
+                const fullImage = this.dataset.full;
+                
+                // Update main image
+                const mainImage = document.querySelector(`.vehicle-image[data-gallery="${galleryId}"]`);
+                mainImage.src = fullImage;
+                
+                // Update active thumbnail
+                document.querySelectorAll(`.thumbnail[data-gallery="${galleryId}"]`).forEach(t => {
+                    t.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
+        // Contact form functionality
+        function scrollToContact(vehicleName) {
+            const contactSection = document.getElementById('contactSection');
+            const vehicleSelect = document.getElementById('vehicle');
+            
+            contactSection.scrollIntoView({ behavior: 'smooth' });
+            
+            setTimeout(() => {
+                if (vehicleName) {
+                    vehicleSelect.value = vehicleName;
+                }
+            }, 500);
+        }
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show success message
+            const successMessage = document.getElementById('successMessage');
+            successMessage.classList.add('show');
+            
+            // Reset form
+            this.reset();
+            
+            // Scroll to success message
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
